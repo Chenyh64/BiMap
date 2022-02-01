@@ -23,8 +23,8 @@ if(NOT googletest_POPULATED)
         add_subdirectory(${googletest_SOURCE_DIR} ${googletest_BINARY_DIR})
 endif()
 
-option(GRAPH__ENABLE_TESTS "Enable Graph lib tests." ON)
+option(BIMAP__ENABLE_TESTS "Enable Graph lib tests." ON)
 
-if(GRAPH__ENABLE_TESTS)
+if(BIMAP__ENABLE_TESTS)
         add_subdirectory(test)
 endif()
