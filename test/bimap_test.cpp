@@ -46,7 +46,7 @@ class BiMapTest : public ::testing::Test {
    };
 
 TEST_F(BiMapTest, BasicTest) {
-    BiMap mapping(10);
+    BiMap mapping(11);
     for (int i = 0; i < 10; ++i) {
         mapping.update(i, i + 1);
     }
@@ -74,7 +74,7 @@ TEST_F(BiMapTest, BasicTest) {
 }
 
 TEST_F(BiMapTest, SwapTest) {
-    BiMap mapping(10);
+    BiMap mapping(11);
     for (int i = 0; i < 10; ++i) {
         mapping.update(i, i + 1);
     }
@@ -88,6 +88,25 @@ TEST_F(BiMapTest, SwapTest) {
     for (int i = 5; i < 10; ++i) {
         EXPECT_EQ(mapping.getValueByKey(i), i - 5 + 1);
         EXPECT_EQ(mapping.getKeyByValue(i - 5 + 1), i);
+    }
+    for (int i = 0; i < 5; ++i) {
+        mapping.swapKeyByValue(i + 1, i + 5 + 1);
+    }
+    for (int i = 0; i < 10; ++i) {
+        EXPECT_EQ(mapping.getValueByKey(i), i + 1);
+        EXPECT_EQ(mapping.getKeyByValue(i + 1), i);
+    }
+}
+
+TEST_F(BiMapTest, ReverseTest) {
+    BiMap mapping(11);
+    for (int i = 0; i < 10; ++i) {
+        mapping.update(i, i + 1);
+    }
+    BiMap revMapping = mapping.reverse();
+    for (int i = 0; i < 10; ++i) {
+        EXPECT_EQ(revMapping.getValueByKey(i + 1), i);
+        EXPECT_EQ(revMapping.getKeyByValue(i), i + 1);
     }
 }
 

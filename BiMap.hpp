@@ -36,6 +36,8 @@ class BiMap
 
 		void swapValueByKey(int key1, int key2);
 
+		void swapKeyByValue(int value1, int value2);
+
 		int size() { return mapping_.size() / 2; }
 
 		bool hasKey(int key);
@@ -45,6 +47,8 @@ class BiMap
 		void print();
 
 		bool load_from_file(ifstream &mappingFile);
+
+		BiMap reverse();
 };
 #endif
 

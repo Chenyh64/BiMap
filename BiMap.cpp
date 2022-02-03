@@ -36,6 +36,13 @@ void BiMap::swapValueByKey(int key1, int key2) {
     update(key2, value1);
 }
 
+void BiMap::swapKeyByValue(int value1, int value2) {
+    int key1 = getKeyByValue(value1);
+    int key2 = getKeyByValue(value2);
+    update(key1, value2);
+    update(key2, value1);    
+}
+
 
 bool BiMap::hasKey(int key) {
     return mapping_.find(key) != mapping_.end();
@@ -69,6 +76,16 @@ bool BiMap::load_from_file(ifstream &mappingFile) {
     }
 
     return true;
+}
+
+
+BiMap BiMap::reverse() {
+    BiMap revMapping(offset_);
+    for (auto it : mapping_) {
+        if (it.first >= offset_) continue;
+        revMapping.update(it.second  - offset_, it.first);
+    }
+    return revMapping; 
 }
 
 }  // namespace: bimap
