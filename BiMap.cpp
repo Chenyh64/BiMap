@@ -53,9 +53,15 @@ bool BiMap::hasValue(int value) {
 }
 
 void BiMap::print() {
+    vector<int> keys;
     for (auto it : mapping_) {
         if (it.first >= offset_) continue;
-        printf("key: %d val: %d | ", it.first, it.second  - offset_ );
+        keys.push_back(it.first);
+    }
+    sort(keys.begin(), keys.end());
+    for (auto key : keys) {
+        int val = getValueByKey(key);
+        printf("key: %d val: %d | ", key, val);
     }
     cout << endl;
 }
