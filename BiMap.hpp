@@ -5,7 +5,6 @@
 #include <unordered_map>
 #include <fstream>
 #include <vector>
-#include <algorithm>
 
 using namespace std;
 
@@ -18,12 +17,14 @@ class BiMap
 {
 	private:
 		int offset_;
-		unordered_map<int, int> mapping_;
+		// unordered_map<int, int> mapping_;
+		vector<int> mapping_;
+		int count = 0;
 
 	public:
 
 		BiMap() {};
-		BiMap(int offset) : offset_(offset) {};
+		BiMap(int offset) : offset_(offset) { mapping_ = vector<int>(2 * offset_, -1); };
 		~BiMap() {};
 
 		void update(int key, int val);
@@ -40,7 +41,7 @@ class BiMap
 
 		void swapKeyByValue(int value1, int value2);
 
-		int size() { return mapping_.size() / 2; }
+		int size() { return count; }
 
 		bool hasKey(int key);
 

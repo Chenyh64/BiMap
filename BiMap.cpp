@@ -9,11 +9,13 @@ namespace bimap {
 void BiMap::update(int key, int value) { 
     mapping_[key] = offset_ + value; 
     mapping_[offset_ + value] = key;
+    count++;
 }
 
 void BiMap::eraseByKey(int key) {
-    mapping_.erase(mapping_[key]);
-    mapping_.erase(key);
+    mapping_[mapping_[key]] = -1;
+    mapping_[key] = -1;
+    count--;
 }
 
 void BiMap::eraseByValue(int value) {
@@ -34,6 +36,7 @@ void BiMap::swapValueByKey(int key1, int key2) {
     int value2 = getValueByKey(key2);
     update(key1, value2);
     update(key2, value1);
+    count -= 2;
 }
 
 void BiMap::swapKeyByValue(int value1, int value2) {
@@ -41,27 +44,24 @@ void BiMap::swapKeyByValue(int value1, int value2) {
     int key2 = getKeyByValue(value2);
     update(key1, value2);
     update(key2, value1);    
+    count -= 2;
 }
 
 
 bool BiMap::hasKey(int key) {
-    return mapping_.find(key) != mapping_.end();
+    // return mapping_.find(key) != mapping_.end();
+    return mapping_[key] != -1;
 }
 
 bool BiMap::hasValue(int value) {
-    return mapping_.find(offset_ + value) != mapping_.end();
+    // return mapping_.find(offset_ + value) != mapping_.end();
+    return mapping_[offset_ + value] != -1;
 }
 
 void BiMap::print() {
-    vector<int> keys;
-    for (auto it : mapping_) {
-        if (it.first >= offset_) continue;
-        keys.push_back(it.first);
-    }
-    sort(keys.begin(), keys.end());
-    for (auto key : keys) {
-        int val = getValueByKey(key);
-        printf("key: %d val: %d | ", key, val);
+    for (int i = 0; i < offset_; i++) {
+        if (mapping_[i] == -1) continue;
+        printf("key: %d val: %d | ", i, mapping_[i]  - offset_ );
     }
     cout << endl;
 }
@@ -69,6 +69,7 @@ void BiMap::print() {
 
 bool BiMap::load_from_file(ifstream &mappingFile) {
     mappingFile >> offset_;
+    mapping_ = vector<int>(2 * offset_, -1);
 
     int key = 0;
     int value;
@@ -87,9 +88,9 @@ bool BiMap::load_from_file(ifstream &mappingFile) {
 
 BiMap BiMap::reverse() {
     BiMap revMapping(offset_);
-    for (auto it : mapping_) {
-        if (it.first >= offset_) continue;
-        revMapping.update(it.second  - offset_, it.first);
+    for (int i = 0; i < offset_; i++) {
+        if (mapping_[i] == -1) continue;
+        revMapping.update(mapping_[i]  - offset_, i);
     }
     return revMapping; 
 }
